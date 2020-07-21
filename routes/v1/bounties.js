@@ -36,7 +36,15 @@ router.post('/', (req, res) => {
 
 // Update
 router.put('/:id', (req, res) => {
-  res.send('UPDATE')
+  db.Bounty.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true }
+  )
+  .then(updatedBounty => {
+    res.send(updatedBounty)
+  })
+  .catch(err => console.error(err))
 })
 
 // Delete
