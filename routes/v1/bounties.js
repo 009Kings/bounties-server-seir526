@@ -25,13 +25,14 @@ router.get('/:id', (req, res) => {
 // Create
 router.post('/', (req, res) => {
   // TODO: Figure out splitting and trimming for variable whitespace
-  req.body.hunters = req.body.hunters.split(',')
+  req.body.hunters = req.body.hunters.split(',').map(hunter=>hunter.trim())
 
-  db.Bounty.create(req.body)
-    .then(newBounty => {
-      res.send(newBounty)
-    })
-    .catch(err => console.error(err))
+  res.send(req.body)
+  // db.Bounty.create(req.body)
+  //   .then(newBounty => {
+  //     res.send(newBounty)
+  //   })
+  //   .catch(err => console.error(err))
 })
 
 // Update
