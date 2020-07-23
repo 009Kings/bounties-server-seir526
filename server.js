@@ -1,9 +1,16 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const db = require('./models')
+const cors = require('cors')
 
 // Middleware goes here
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  optionsSuccessStatus: 200
+}))
 app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 // ROUTES
 app.get('/', (req, res) => {

@@ -24,15 +24,24 @@ router.get('/:id', (req, res) => {
 
 // Create
 router.post('/', (req, res) => {
-  // TODO: Figure out splitting and trimming for variable whitespace
-  req.body.hunters = req.body.hunters.split(',').map(hunter=>hunter.trim())
+  // check the body of the request for empty strings and remove them from the body.
+  for(key in req.body) {
+    if (!req.body[key]) {
+      delete req.body[key]
+    }
 
-  res.send(req.body)
-  // db.Bounty.create(req.body)
-  //   .then(newBounty => {
-  //     res.send(newBounty)
-  //   })
-  //   .catch(err => console.error(err))
+    if (key === 'hunters' && req.body.hunters) {
+      req.body.hunters = req.body.hunters.split(',').map(hunter=>hunter.trim())
+    }
+  }
+
+  console.log(`✨`)
+  console.log(req.body)
+  db.Bounty.create(req.body)
+    .then(newBounty => {
+      res.send(newBounty)
+    })
+    .catch(err => console.error(err))
 })
 
 // Update
