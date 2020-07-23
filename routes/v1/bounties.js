@@ -6,6 +6,7 @@ const db = require('../../models')
 // write sum routes
 // Index
 router.get('/', (req, res) => {
+  console.log("✨ get dat bounty")
   db.Bounty.find()
     .then(bounties => {
       res.send(bounties)
@@ -24,15 +25,20 @@ router.get('/:id', (req, res) => {
 
 // Create
 router.post('/', (req, res) => {
-  // TODO: Figure out splitting and trimming for variable whitespace
+  // splitting and trimming for variable whitespace
+  console.log(req.body)
   req.body.hunters = req.body.hunters.split(',').map(hunter=>hunter.trim())
+  for (key in req.body) {
+    if (!req.body[key] || (key === "hunters" && !req.body[key][0])) {
+      delete req.body[key]
+    }
+  }
 
-  res.send(req.body)
-  // db.Bounty.create(req.body)
-  //   .then(newBounty => {
-  //     res.send(newBounty)
-  //   })
-  //   .catch(err => console.error(err))
+  db.Bounty.create(req.body)
+    .then(newBounty => {
+      res.send(newBounty)
+    })
+    .catch(err => console.error(err))
 })
 
 // Update
