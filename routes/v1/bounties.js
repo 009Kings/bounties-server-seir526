@@ -24,6 +24,7 @@ router.get('/:id', (req, res) => {
 
 // Create
 router.post('/', (req, res) => {
+  console.log('Hitting post route!')
   // check the body of the request for empty strings and remove them from the body.
   for(key in req.body) {
     if (!req.body[key]) {
