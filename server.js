@@ -1,8 +1,9 @@
 require('dotenv').config()
-const express = require('express')
-const app = express()
-const db = require('./models')
 const cors = require('cors')
+const express = require('express')
+const passport = require('passport')
+
+const app = express()
 
 // Middleware goes here
 app.use(cors({
@@ -14,20 +15,20 @@ app.use(express.json())
 
 // ROUTES
 app.get('/', (req, res) => {
-  res.send('Nothing to see here, move along human')
+  res.status(200).json({ message: 'Nothing to see here, move along human'})
 })
 
-app.use('/v1/bounties', require('./routes/v1/bounties'))
+// Passport Middleware
+app.use(passport.initialize());
 
-// TODO: Delete test route
-// app.get('/test', (req, res) => {
-//   db.Bounty.find()
-//     .then(bounties => res.send(bounties))
-//     .catch(err => {
-//       console.error(err)
-//       res.send({ message: 'Server Error' })
-//     })
-// })
+// Passport JWT Config
+require('./config/passport')(passport);
+
+// Use Routes
+// TODO—write sum routes, put them in
+app.use('/v1/auth', require('./routes/v1/auth'));
+app.use('/v1/bounties', require('./routes/v1/bounties'))
+app.use('/v1', passport.authenticate('jwt', { session: false }), require('./routes/v1/userSaves'))
 
 // LISTEN
 app.listen(process.env.PORT || 3000, () => {

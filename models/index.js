@@ -21,3 +21,4 @@ db.on('error', err => {
 
 // export all our models
 module.exports.Bounty = require('./bounty')
+module.exports.User = require('./user')
