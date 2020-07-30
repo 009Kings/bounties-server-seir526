@@ -38,6 +38,7 @@ router.post('/register', (req, res) => {
 
 // GET v1/auth/login (Public)
 router.post('/login', (req, res) => {
+  console.log('💥')
   const email = req.body.email;
   const password = req.body.password;
 
